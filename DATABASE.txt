@@ -1,0 +1,181 @@
+
+from .models import prd_details1
+
+class prd_detail_admin(admin.ModelAdmin):
+
+    list_display = ['name','prd_qnty','prd_price','prd_loc']
+
+admin.site.register(prd_details1 , prd_detail_admin)
+
+
+
+
+
+class prd_details1(models.Model):
+    name = models.CharField(max_length=25)
+    prd_qnty = models.IntegerField()
+    prd_price = models.FloatField()
+    prd_loc = models.CharField(max_length=10)
+
+
+
+
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'mssql',
+        'NAME': 'mssqlconnectt',
+        'USER': '',
+        'PASSWORD': '',
+        'HOST': 'DESKTOP-RE7GUR4\SQLEXPRESS',
+        'port' : '',
+        'OPTIONS': { 'driver': 'ODBC Driver 17 for SQL Server',
+        },
+    },
+}
+
+
+
+from .models import prd_details1
+
+def show(r):
+    prd_list = prd_details1.objects.all()  #ORM Query #select * from dbo.connectapp_prd_details1
+    prd_dict = {'prd_list':prd_list}
+
+    return render(r,'connection/show.html',context=prd_dict)
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% if prd_list %}
+
+<table border="1" margin="auto">
+  <tr>
+    <th>ID</th>
+    <th>Name</th>
+    <th>prd_qnty</th>
+    <th>prd_price</th>
+    <th>prd_loc</th>
+  </tr>
+    {% for prd in prd_list %}
+    <tr>
+    <td>{{prd.id}}</td>
+    <td>{{prd.Name}}</td>
+    <td>{{prd.prd_qnty}}</td>
+    <td>{{prd.prd_price}}</td>
+    <td>{{prd.prd_loc}}</td>
+  </tr>
+{%endfor%}
+
+</table>
+{%else%}
+<h1> No Data Found </h1>
+
+{%endif%}
+
+</body>
+</html>
+
+
+if we want table in center then we have to use this command
+<table border="1" margin="auto" align="center">
+
+
+
+connection of models and forms ----
+from django import forms
+from.models import python323334
+class Python323334Form(forms.ModelForm):
+    class Meta:
+        model = python323334
+        fields = "__all__"
+    
+
+      
+
+       #fields = ('fields,')        we can write here,  how many fields we want??
+        
+        #exclude = ('fields')          we can exclude here, how many fields we want to exclude??
+
+
+
+
+
+from django.shortcuts import render
+from .forms import Python323334Form
+from django.http import HttpResponse
+# Create your views here.
+def pythonform(r):
+    form  = Python323334Form()
+    if r.method =='post':
+        form = Python323334Form(r.post)
+        if form.is_valid():
+            form.save()
+        return HttpResponse('<h1> Thanks for visiting </h1>')  
+    
+    
+    return render(r,'python/registration.html',{'form':form})
+
+
+
+
+
+from django.shortcuts import render
+from .forms import Python323334Form
+from django.http import HttpResponse
+# Create your views here.
+def pythonform(r):
+    form  = Python323334Form()
+    if r.method =='POST':
+        form = Python323334Form(r.POST)
+        if form.is_valid():
+            form.save()
+        return HttpResponse('<h1> Thanks for visiting </h1>')
+
+
+
+
+    return render(r,'python/registration.html',{'form':form})
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="container" align="center">
+    <h1>Registration Form</h1>
+    <form method="post">
+        {{form.as_p}}
+        {%csrf_token%}
+        <input type="submit" value="submit">
+    </form>
+</div>>
+</body>
+</html>
+
+
+
+from django.contrib import admin
+from django.urls import path
+from python import views
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('python/', views.pythonform),
+]
+
